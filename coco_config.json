@@ -1,0 +1,9 @@
+
+coco_config {
+  root_directory_path: "/workspace/project/Aquarium-Combined-3"
+  img_dir_names: ["test", "train", "valid"]
+  annotation_files: ["test/_annotations.coco.json", "train/_annotations.coco.json", "valid/_annotations.coco.json"]
+  num_partitions: 3
+  num_shards: [1, 72, 2]
+}
+image_directory_path: "/workspace/project/Aquarium-Combined-3"

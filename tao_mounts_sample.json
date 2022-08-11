@@ -1,0 +1,16 @@
+{
+    "Mounts": [
+        {
+            "source": "/home/ubuntu/ananth-tao-experiments/project",
+            "destination": "/workspace/project"
+        }
+    ],
+    "DockerOptions": {
+        "shm_size": "14G",
+        "ulimits": {
+            "memlock": -1,
+            "stack": 67108864
+        },
+        "user": "1000:1000"
+    }
+}

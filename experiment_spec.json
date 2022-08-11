@@ -1,0 +1,109 @@
+
+random_seed: 42
+yolov4_config {
+  big_anchor_shape: "[(114.94, 60.67), (159.06, 114.59), (297.59, 176.38)]"
+  mid_anchor_shape: "[(42.99, 31.91), (79.57, 31.75), (56.80, 56.93)]"
+  small_anchor_shape: "[(15.60, 13.88), (30.25, 20.25), (20.67, 49.63)]"
+  box_matching_iou: 0.25
+  matching_neutral_box_iou: 0.5
+  arch: "resnet"
+  nlayers: 18
+  loss_loc_weight: 1.0
+  loss_neg_obj_weights: 1.0
+  loss_class_weights: 1.0
+  label_smoothing: 0.0
+  big_grid_xy_extend: 0.05
+  mid_grid_xy_extend: 0.1
+  small_grid_xy_extend: 0.2
+  freeze_bn: false
+  freeze_blocks: 0
+  force_relu: false
+}
+training_config {
+  batch_size_per_gpu: 8
+  num_epochs: 80
+  enable_qat: false
+  checkpoint_interval: 10
+  learning_rate {
+    soft_start_cosine_annealing_schedule {
+      min_learning_rate: 1e-7
+      max_learning_rate: 1e-4
+      soft_start: 0.3
+    }
+  }
+  regularizer {
+    type: L1
+    weight: 3e-5
+  }
+  optimizer {
+    adam {
+      epsilon: 1e-7
+      beta1: 0.9
+      beta2: 0.999
+      amsgrad: false
+    }
+  }
+  pretrain_model_path: "/workspace/project/resnet_18.hdf5"
+}
+eval_config {
+  average_precision_mode: SAMPLE
+  batch_size: 8
+  matching_iou_threshold: 0.5
+}
+nms_config {
+  confidence_threshold: 0.001
+  clustering_iou_threshold: 0.5
+  top_k: 200
+}
+augmentation_config {
+  hue: 0
+  saturation: 1
+  exposure: 1
+  vertical_flip: 0
+  horizontal_flip: 0
+  jitter: 0
+  output_width: 640
+  output_height: 640
+  output_channel: 3
+  randomize_input_shape_period: 0
+  mosaic_prob: 0
+  mosaic_min_ratio: 0.2
+}
+dataset_config {
+  data_sources: {
+      tfrecords_path: "/workspace/project/output_tfrecords/*"
+      image_directory_path: "/workspace/project/Aquarium-Combined-3"
+  }
+  include_difficult_in_training: true
+  image_extension: "jpg"
+  target_class_mapping {
+      key: "fish"
+      value: "fish"
+  }
+  target_class_mapping {
+      key: "jellyfish"
+      value: "jellyfish"
+  }
+  target_class_mapping {
+      key: "penguins"
+      value: "penguins"
+  }
+  target_class_mapping {
+      key: "sharks"
+      value: "sharks"
+  }
+  target_class_mapping {
+      key: "puffins"
+      value: "puffins"
+  }
+  target_class_mapping {
+      key: "stingrays"
+      value: "stingrays"
+  }
+
+  target_class_mapping {
+      key: "starfish"
+      value: "starfish"
+  }
+  validation_fold: 0
+}
